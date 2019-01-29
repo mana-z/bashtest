@@ -73,13 +73,15 @@ function bUnit_runAllTests()
 
     # print results
     if [ "$1" == "xml" ]; then # xUnit xml output
+        local timestamp=$(date -Iseconds | sed 's/\+.*//')
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         echo "<testsuites>"
         for i in ${!suites[@]}; do
             read -a tests <<< ${suites[$i]}
-            echo "<testsuite name=\"$i\" tests=\"${#tests[@]}\">"
+            echo "<testsuite name=\"$i\" hostname=\"$HOSTNAME\" tests=\"${#tests[@]}\" timestamp=\"$timestamp\">"
             for j in "${tests[@]}"; do
-                echo "<testcase name=\"$j\" classname=\"$i\">"
+                local time=$(LC_ALL=C printf "%.3f" $(bc -l <<< "${testtimes[${i}_$j]}/1000"))
+                echo "<testcase name=\"$j\" classname=\"$i\" time=\"$time\">"
                 [ ! ${testresults[${i}_$j]} -eq 0 ] && echo "<failure />"
                 echo "</testcase>"
             done
