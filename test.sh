@@ -10,12 +10,12 @@ test_otherSuiteWithDifferentHello_helloWorld ()
 
 setup_general ()
 {
-    echo setup for general called
+    echo setup for general called > /dev/stderr
 }
 
 teardown_general ()
 {
-    echo teardown for general called
+    echo teardown for general called > /dev/stderr
 }
 
 test_general_helloWorld ()
