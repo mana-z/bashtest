@@ -71,8 +71,8 @@ function bUnit_runAllTests()
         [ $? -eq 0 ] && teardown_$mysuite
     done
 
-    # print results for each suite
-    if [ "$1" == "xml" ]; then # xml output
+    # print results
+    if [ "$1" == "xml" ]; then # xUnit xml output
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         echo "<testsuites>"
         for i in ${!suites[@]}; do
