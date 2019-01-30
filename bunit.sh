@@ -74,18 +74,43 @@ function bUnit_runAllTests()
     # print results
     if [ "$1" == "xml" ]; then # xUnit xml output
         local timestamp=$(date -Iseconds | sed 's/\+.*//')
+        local suiteid=0
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         echo "<testsuites>"
+
         for i in ${!suites[@]}; do
             read -a tests <<< ${suites[$i]}
-            echo "<testsuite name=\"$i\" hostname=\"$HOSTNAME\" tests=\"${#tests[@]}\" timestamp=\"$timestamp\">"
+
+            # pulling failures and times for having it in testsuite attributes
+            local failuresCount=0
+            local totaltime=0
+            for j in "${tests[@]}"; do
+                local testcase="${i}_$j"
+                local testtime=${testtimes[$testcase]}
+                ((totaltime+=testtime))
+                [ ! ${testresults[$testcase]} -eq 0 ] && ((failuresCount++))
+            done
+            local totaltime_f=$(LC_ALL=C printf "%.3f" $(bc -l <<< "$totaltime/1000"))
+
+            echo "<testsuite"\
+                "name=\"$i\""\
+                "package=\"$i\""\
+                "id=\"$suiteid\""\
+                "hostname=\"$HOSTNAME\""\
+                "tests=\"${#tests[@]}\""\
+                "errors=\"0\""\
+                "failures=\"$failuresCount\""\
+                "time=\"$totaltime_f\""\
+                "timestamp=\"$timestamp\""\
+                ">"
             for j in "${tests[@]}"; do
                 local time=$(LC_ALL=C printf "%.3f" $(bc -l <<< "${testtimes[${i}_$j]}/1000"))
                 echo "<testcase name=\"$j\" classname=\"$i\" time=\"$time\">"
-                [ ! ${testresults[${i}_$j]} -eq 0 ] && echo "<failure />"
+                [ ! ${testresults[${i}_$j]} -eq 0 ] && echo "<failure type=\"fail macro called\"/>"
                 echo "</testcase>"
             done
             echo "</testsuite>"
+            ((suiteid++))
         done
         echo "</testsuites>"
 
