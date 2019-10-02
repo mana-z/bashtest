@@ -19,7 +19,7 @@ expect issues.
 ### Installing
 #### Without Docker
 
-- Just put bUnit.sh to /usr/local/bin or any other place in your PATH.
+- Just put `bUnit.sh` to `/usr/local/bin` or any other place in your PATH.
 
 ### With Docker
 
@@ -54,10 +54,10 @@ test_<suite name>_<test name> ()
 }
 ```
 
-Please note that putting any other underscore in the fucntion definition is not allowed, and neither
+Please note that putting any other underscore in the function definition is not allowed, and neither
 is omitting any of the suite name or test name.
 
-Neiter suites nor tests need not to be declared in any other way.
+Neither suites nor tests need not to be declared in any other way.
 
 For test assertions, a `fail` alias is defined and understood by bUnit, with the example usage as
 shown:
@@ -83,9 +83,9 @@ teardown_<suite name> ()
 }
 ```
 
-See [example.sh] for example use
+See [example.sh](example) for example use
 
 
 ## Licence
 
-This software is distributed under the GPL-3.0, see [COPYING] for details.
+This software is distributed under the GPL-3.0, see [COPYING](COPYING) for details.
