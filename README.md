@@ -1,7 +1,7 @@
 # bUnit
 
 An xUnit-like testing framework for Bash 5. Suitable for testing bash scripts or doing upper-level
-tests for any other language and is capable of emitting xUnit XML files..
+tests for any other language and is capable of emitting xUnit XML files.
 
 ## Dependencies
 
@@ -83,9 +83,18 @@ teardown_<suite name> ()
 }
 ```
 
-See [example.sh](example) for example use
+For ignoring of tests, you may append an arbitrary prefix to the function name, as that will
+effectively be ignored by the test lookup.
+
+See [example.sh](example.sh) for example use
+
+
+## TODO
+
+- Triggering individual tests
+- ?
 
 
 ## Licence
 
-This software is distributed under the GPL-3.0, see [COPYING](COPYING) for details.
+This software is distributed under the GPL-3.0 license, see [COPYING](COPYING) for details.
