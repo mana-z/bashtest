@@ -93,7 +93,7 @@ function bUnit_runAllTests()
 
     # print results
     if [ "$1" == "xml" ]; then # xUnit xml output
-        local timestamp=$(date -Iseconds | sed 's/\+.*//')
+        local timestamp=$(date -Iseconds | sed 's/+.*//')
         local suiteid=0
         echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         echo "<testsuites>"
