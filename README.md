@@ -13,39 +13,38 @@ OR
 
 - Docker
 
-Note: busybox versions of coreutils and bc (or any other version in that matter) may work, but
+Note: busybox versions of Coreutils and bc (or any other version in that matter) may work, but
 expect issues.
 
-### Installing
-#### Without Docker
+## Installing
+### Without Docker
 
-- Just put `bUnit.sh` to `/usr/local/bin` or any other place in your PATH.
+- Just put `bunit.sh` to `/usr/local/bin` or any other place in your PATH.
 
 ### With Docker
 
 - Build included Alpine-based dockerfile.
 
-
 ## Usage
 
-First, before you define your tests, you have to source the framework.
+First, before defining your tests, you have to source the framework:
 
 ```
 source bunit.sh
 ```
 
-and after defining the tests, call the main bUnit function  
+After defining the tests, call the main bUnit function:  
 
 ```
 bUnit_runAllTests $*
 ```
 
-the function undestands a single optional paramater `xml`, which will enable emitting of xUnit XML
+the function understands a single optional paramater `xml`, which will enable emitting of xUnit XML
 on the standard output.
 
 ## Defining tests
 
-The bUnit does lookup of defined functions in this format:
+The bUnit does lookup of functions complying to this format:
 
 ```
 test_<suite name>_<test name> ()
@@ -84,14 +83,14 @@ teardown_<suite name> ()
 ```
 
 For ignoring of tests, you may append an arbitrary prefix to the function name, as that will
-effectively be ignored by the test lookup.
+be ignored by the test discovery.
 
 See [example.sh](example.sh) for example use
 
 
 ## TODO
 
-- Triggering individual tests
+- Triggering individual tests or groups
 - ?
 
 
