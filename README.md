@@ -5,7 +5,7 @@ tests for any other language and is capable of emitting xUnit XML files.
 
 ## Dependencies
 
-- Bash (version 5 is needed, as associative arrays are widely used)
+- Bash (version 5+ needed, as associative arrays are widely used)
 - bc
 - GNU Coreutils
 
@@ -23,7 +23,11 @@ expect issues.
 
 ### With Docker
 
-- Build included Alpine-based dockerfile.
+- Build included Alpine-based dockerfile:
+
+```
+$ docker build -t bunit .
+```
 
 ## Usage
 
@@ -67,7 +71,7 @@ shown:
 
 bUnit is capable of pretty-printing the failure with surrounding context for ease of use.
 
-For each test suite, a setup and a teardown may be optionally defined. Those are called before and
+For each test suite, a setup and a teardown may be defined. Those are called before and
 after each test of the suite:
 
 ```
@@ -82,10 +86,12 @@ teardown_<suite name> ()
 }
 ```
 
+Setups and teardowns are optional. You may define none, one of, or both.
+
 For ignoring of tests, you may append an arbitrary prefix to the function name, as that will
 be ignored by the test discovery.
 
-See [example.sh](example.sh) for example use
+See [example.sh](example.sh) for example use.
 
 
 ## TODO
