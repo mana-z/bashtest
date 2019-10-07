@@ -1,7 +1,7 @@
 # bUnit
 
 An xUnit-like testing framework for Bash 5. Suitable for testing bash scripts or doing upper-level
-tests for any other language and is capable of emitting xUnit XML files.
+tests for arbitrary executables and is capable of emitting xUnit XML files.
 
 ## Dependencies
 
