@@ -21,6 +21,8 @@
 ################################################################################
 
 # print failure
+#
+# Will print surrounding context with line numbers
 # note: not super-fast, will always add a few millis to duration
 function _bUnit_failprint()
 {
@@ -35,7 +37,7 @@ function _bUnit_failprint()
 }
 
 # to have return in caller instead of having it buried in printing function, we
-# have to have alias
+# have to have an alias
 shopt -s expand_aliases
 alias fail='{ _bUnit_failprint $LINENO; return 1; }'
 
@@ -62,6 +64,10 @@ function bUnit_runAllTests()
         # parse suite name and test name from test function and store to suites map
         local mysuite=$(awk -F_ '{print $2}' <<< $i)
         local mytest=$(awk -F_ '{print $3}' <<< $i)
+        if [[ -z $mysuite || -z $mytest ]]; then
+            echo "test '$i' has an invalid format, skipping..." > /dev/stderr
+            continue
+        fi
         suites[$mysuite]="${suites[$mysuite]} $mytest"
 
         # run suite setup if any
