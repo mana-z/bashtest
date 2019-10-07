@@ -23,31 +23,38 @@
 
 source bunit.sh
 
-test_otherSuiteWithDifferentHello_helloWorld ()
-{
-    [ 0 -eq 1 ] || fail
-    return 0
-}
 
+# setup function for a test suite 'general', called before every test of the suite
 setup_general ()
 {
     echo setup for general called > /dev/stderr
 }
 
+# teardown function for a test suite 'general', called after every test of the suite
 teardown_general ()
 {
     echo teardown for general called > /dev/stderr
 }
 
+# an example (passing) test called 'helloWorld' in a 'general' suite
 test_general_helloWorld ()
 {
     [ 0 -eq 0 ] || fail
     return 0
 }
 
+# an example (failing) test called 'helloWorld' in a 'general' suite
 test_general_willFail ()
 {
     [ 1 -eq 0 ] || fail
+    return 0
+}
+
+# a test in an different test suite, but with a same name of test
+# - same names in a different suites does not conflict
+test_otherSuiteWithDifferentHello_helloWorld ()
+{
+    [ 0 -eq 1 ] || fail
     return 0
 }
 
