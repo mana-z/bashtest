@@ -89,7 +89,14 @@ teardown_<suite name> ()
 Setups and teardowns are optional. You may define none, one of, or both.
 
 For ignoring of tests, you may append an arbitrary prefix to the function name, as that will
-be ignored by the test discovery.
+be ignored by the test discovery. For example:
+
+```
+ignore_test_<suite name>_<test name> ()
+{
+    # ...
+}
+```
 
 See [example.sh](example.sh) for example use.
 
