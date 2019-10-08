@@ -111,11 +111,16 @@ ignore_test_<suite name>_<test name> ()
 See [example.sh](example.sh) for example use.
 
 
-## TODO
+## (Optional) bash completion
 
-- Triggering individual tests or groups
-- ?
+A bash completion is available for convenience. Just hit this command:
 
+```
+$ source /path/to/this/repo/bunit_completion.sh ./your_test_runner_command.sh
+```
+
+New tests are registered dynamically during completion trigger, so you only need to call this again
+on a new bash session.
 
 ## Licence
 
