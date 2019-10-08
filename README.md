@@ -43,8 +43,18 @@ After defining the tests, call the main bUnit function:
 bUnit_runAllTests $*
 ```
 
-the function understands a single optional paramater `xml`, which will enable emitting of xUnit XML
-on the standard output.
+### Understood arguments
+
+- `xml` - output xUnit XML on the standard output
+- `xmlfile=<filename>` - output xUnit XML to a file
+- `test_<suite name>_<test name>` run individual test
+
+Note that `xml` and `xmlfile=` are exclusive and if both, or multiple of one, is used, only the last
+one is used.
+
+Multiple `test_<suite name>_<test name>` arguments may be passed for triggering multiple individual
+tests. If passed test is not valid, it is treated as no parameter, e.g. with no valid tests, all
+tests are run, or the remaining tests are run if some tests from arguments are valid.
 
 ## Defining tests
 
