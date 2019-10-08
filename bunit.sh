@@ -52,13 +52,41 @@ function bUnit_runAllTests()
     # result messages
     local passed="${go_green}PASSED${go_reset}"
     local failed="${go_red}FAILED${go_reset}"
+
+    # handle command line parameters
+    local xmloutput=""
+    declare -A individualtests
+    while [[ -n $1 ]]; do
+        case $1 in
+            xmlfile=*)
+                xmloutput=$(awk -F= '{print $2;}' <<< "$1")
+                ;;
+            xml)
+                xmloutput="/dev/stdout"
+                ;;
+            test_*)
+                if [[ -n $(compgen -A function | grep $1) ]]; then
+                    testlist=("${testlist[@]}" "$1")
+                else
+                    echo "test $1 does not exist" 1>&2
+                fi
+                ;;
+            *)
+                echo "Unrecognised parameter $1" 1>&2
+                ;;
+        esac
+        shift
+    done
+
     declare -A suites # map for suites (associates suite name with string with tests)
 
     # results and times
     declare -A testresults
     declare -A testtimes
     # read all test names into an array
-    read -a testlist <<< $(compgen -A function | grep ^test_ | tr '\n' ' ')
+    if [[ ${#testlist[@]} -eq 0 ]]; then
+        read -a testlist <<< $(compgen -A function | grep ^test_ | tr '\n' ' ')
+    fi
     # do actual tests
     for i in "${testlist[@]}"; do
         # parse suite name and test name from test function and store to suites map
@@ -98,11 +126,11 @@ function bUnit_runAllTests()
     done
 
     # print results
-    if [ "$1" == "xml" ]; then # xUnit xml output
+    if [[ -n $xmloutput ]]; then # xUnit xml output
         local timestamp=$(date -Iseconds | sed 's/+.*//')
         local suiteid=0
-        echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
-        echo "<testsuites>"
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>" > $xmloutput
+        echo "<testsuites>" >> $xmloutput
 
         for i in ${!suites[@]}; do
             read -a tests <<< ${suites[$i]}
@@ -128,17 +156,17 @@ function bUnit_runAllTests()
                 "failures=\"$failuresCount\""\
                 "time=\"$totaltime_f\""\
                 "timestamp=\"$timestamp\""\
-                ">"
+                ">" >> $xmloutput
             for j in "${tests[@]}"; do
                 local time=$(LC_ALL=C printf "%.3f" $(bc -l <<< "${testtimes[${i}_$j]}/1000"))
-                echo "<testcase name=\"$j\" classname=\"$i\" time=\"$time\">"
-                [ ! ${testresults[${i}_$j]} -eq 0 ] && echo "<failure type=\"fail macro called\"/>"
-                echo "</testcase>"
+                echo "<testcase name=\"$j\" classname=\"$i\" time=\"$time\">" >> $xmloutput
+                [ ! ${testresults[${i}_$j]} -eq 0 ] && echo "<failure type=\"fail macro called\"/>" >> $xmloutput
+                echo "</testcase>" >> $xmloutput
             done
-            echo "</testsuite>"
+            echo "</testsuite>" >> $xmloutput
             ((suiteid++))
         done
-        echo "</testsuites>"
+        echo "</testsuites>" >> $xmloutput
 
     else # pretty-print outputs
         for i in ${!suites[@]}; do
