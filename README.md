@@ -1,4 +1,4 @@
-# bUnit
+# bashtest
 
 An xUnit-like testing framework for Bash 5. Suitable for testing bash scripts or doing upper-level
 tests for arbitrary executables and is capable of emitting xUnit XML files.
@@ -19,14 +19,14 @@ expect issues.
 ## Installing
 ### Without Docker
 
-- Just put `bunit.sh` to `/usr/local/bin` or any other place in your PATH.
+- Just put `bashtest.sh` to `/usr/local/bin` or any other place in your PATH.
 
 ### With Docker
 
 - Build included Alpine-based dockerfile:
 
 ```
-$ docker build -t bunit .
+$ docker build -t bashtest .
 ```
 
 ## Usage
@@ -34,13 +34,13 @@ $ docker build -t bunit .
 First, before defining your tests, you have to source the framework:
 
 ```
-source bunit.sh
+source bashtest.sh
 ```
 
-After defining the tests, call the main bUnit function:  
+After defining the tests, call the main bashtest function:
 
 ```
-bUnit_runAllTests $*
+bashtest_runAllTests $*
 ```
 
 ### Understood arguments
@@ -58,7 +58,7 @@ tests are run, or the remaining tests are run if some tests from arguments are v
 
 ## Defining tests
 
-The bUnit does lookup of functions complying to this format:
+The bashtest does lookup of functions complying to this format:
 
 ```
 test_<suite name>_<test name> ()
@@ -72,14 +72,14 @@ is omitting any of the suite name or test name.
 
 Neither suites nor tests need not to be declared in any other way.
 
-For test assertions, a `fail` alias is defined and understood by bUnit, with the example usage as
+For test assertions, a `fail` alias is defined and understood by bashtest, with the example usage as
 shown:
 
 ```
 [[ $foo == bar ]] || fail
 ```
 
-bUnit is capable of pretty-printing the failure with surrounding context for ease of use.
+bashtest is capable of pretty-printing the failure with surrounding context for ease of use.
 
 For each test suite, a setup and a teardown may be defined. Those are called before and
 after each test of the suite:
@@ -116,7 +116,7 @@ See [example.sh](example.sh) for example use.
 A bash completion is available for convenience. Just hit this command:
 
 ```
-$ source /path/to/this/repo/bunit_completion.sh ./your_test_runner_command.sh
+$ source /path/to/this/repo/bashtest_completion.sh ./your_test_runner_command.sh
 ```
 
 New tests are registered dynamically during completion trigger, so you only need to call this again
