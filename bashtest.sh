@@ -3,20 +3,20 @@
 #
 # Copyright 2019 Martin Zalabak
 #
-# This file is part of bunit.
+# This file is part of bashtest.
 #
-# bunit is free software: you can redistribute it and/or modify
+# bashtest is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# bunit is distributed in the hope that it will be useful,
+# bashtest is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with bunit.  If not, see <https://www.gnu.org/licenses/>.
+# along with bashtest.  If not, see <https://www.gnu.org/licenses/>.
 #
 ################################################################################
 
@@ -24,7 +24,7 @@
 #
 # Will print surrounding context with line numbers
 # note: not super-fast, will always add a few millis to duration
-function _bUnit_failprint()
+function _bashtest_failprint()
 {
     local ctxlength=2 # lines of surrounding context
     local line=$1
@@ -39,10 +39,10 @@ function _bUnit_failprint()
 # to have return in caller instead of having it buried in printing function, we
 # have to have an alias
 shopt -s expand_aliases
-alias fail='{ _bUnit_failprint $LINENO; return 1; }'
+alias fail='{ _bashtest_failprint $LINENO; return 1; }'
 
 
-function bUnit_runAllTests() 
+function bashtest_runAllTests()
 {
     local failures=0
     # nice colors

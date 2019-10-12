@@ -3,14 +3,14 @@
 #
 # Copyright 2019 Martin Zalabak
 #
-# This file is part of bunit.
+# This file is part of bashtest.
 #
-# bunit is free software: you can redistribute it and/or modify
+# bashtest is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# bunit is distributed in the hope that it will be useful,
+# bashtest is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -20,7 +20,7 @@
 #
 ################################################################################
 
-_comp_bunit ()
+_comp_bashtest ()
 {
     local scriptname=$1
     tests=$(grep '^ *[^#]*test_[[:alnum:]][[:alnum:]]*_[[:alnum:]][[:alnum:]]* *()' $scriptname |
@@ -29,6 +29,6 @@ _comp_bunit ()
 }
 
 while [[ -n $1 ]]; do
-    complete -F _comp_bunit $1
+    complete -F _comp_bashtest $1
     shift
 done
