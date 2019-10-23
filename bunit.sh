@@ -22,6 +22,7 @@ alias fail='{ _bUnit_failprint $LINENO; return 1; }'
 
 function bUnit_runAllTests() 
 {
+    local failures=0
     # nice colors
     local go_red="\e[31m"
     local go_green="\e[32m"
@@ -58,7 +59,12 @@ function bUnit_runAllTests()
         # interpret results
         testresults["${mysuite}_${mytest}"]=$result
         testtimes["${mysuite}_${mytest}"]=$duration
-        [ $result -eq 0 ] && echo -e "$passed"  || echo -e "$i...$failed"
+        if [ $result -eq 0 ]; then
+            echo -e "$passed" 
+        else
+            echo -e "$i...$failed"
+            [ $failures -lt 255 ] && ((failures++))
+        fi
 
         #run suite teardown if any
         type teardown_$mysuite >/dev/null 2>&1
@@ -76,5 +82,6 @@ function bUnit_runAllTests()
         done
     done
     echo
+    return $failures
 }
 
