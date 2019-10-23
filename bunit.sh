@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # print failure
-# note: not super-fast, will always add a few mils to duration
+# note: not super-fast, will always add a few millis to duration
 function _bUnit_failprint()
 {
     local ctxlength=2 # lines of surrounding context
