@@ -11,7 +11,7 @@ function _bUnit_failprint()
     local after=$((line + ctxlength));
     local snip=$(nl -ba -s\: $origin | sed -n "${before},${after}p")
     local clear="\e[2K\r" # empties the line
-    echo -e "$clear\n$origin:$line:\n\n$snip\n"
+    echo -e "$clear\n$origin:$line:\n\n$snip\n" > /dev/stderr
 }
 
 # to have return in caller instead of having it buried in printing function, we
@@ -49,7 +49,7 @@ function bUnit_runAllTests()
         [ $? -eq 0 ] && setup_$mysuite
 
         # testing...
-        echo -n "$i..."
+        echo -n "$i..." > /dev/stderr
         local result
         local tic=$(date +%s%N)
         $i
@@ -60,9 +60,9 @@ function bUnit_runAllTests()
         testresults["${mysuite}_${mytest}"]=$result
         testtimes["${mysuite}_${mytest}"]=$duration
         if [ $result -eq 0 ]; then
-            echo -e "$passed" 
+            echo -e "$passed" > /dev/stderr
         else
-            echo -e "$i...$failed"
+            echo -e "$i...$failed" > /dev/stderr
             [ $failures -lt 255 ] && ((failures++))
         fi
 
@@ -72,16 +72,36 @@ function bUnit_runAllTests()
     done
 
     # print results for each suite
-    # TODO xUnit output for appropriate $1
-    for i in ${!suites[@]}; do
-        echo -e "\nTest suite $i:"
-        read -a tests <<< ${suites[$i]}
-        for j in "${tests[@]}"; do
-            [ ${testresults[${i}_$j]} -eq 0 ] && result="$passed" || result="$failed"
-            echo -e "$j: $result (${testtimes[${i}_$j]} ms)"
+    if [ "$1" == "xml" ]; then # xml output
+        echo "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
+        echo "<testsuites>"
+        for i in ${!suites[@]}; do
+            read -a tests <<< ${suites[$i]}
+            echo "<testsuite name=\"$i\" tests=\"${#tests[@]}\">"
+            for j in "${tests[@]}"; do
+                echo "<testcase name=\"$j\" classname=\"$i\">"
+                [ ! ${testresults[${i}_$j]} -eq 0 ] && echo "<failure />"
+                echo "</testcase>"
+            done
+            echo "</testsuite>"
         done
-    done
-    echo
+        echo "</testsuites>"
+
+    else # pretty-print outputs
+        for i in ${!suites[@]}; do
+            echo -e "\nTest suite $i:"
+            read -a tests <<< ${suites[$i]}
+            for j in "${tests[@]}"; do
+                if [ ${testresults[${i}_$j]} -eq 0 ]; then
+                    result="$passed"
+                else
+                    result="$failed"
+                fi
+                echo -e "$j: $result (${testtimes[${i}_$j]} ms)"
+            done
+        done
+        echo
+    fi
     return $failures
 }
 
